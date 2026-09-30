@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خبرگزاری پارس</title>
+
+<!-- ✅ favicon (آیکون تب مرورگر) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff3d5a'/%3E%3Cstop offset='100%25' stop-color='%23ffb400'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ccircle cx='32' cy='30' r='13' stroke='white' stroke-width='2.5' fill='none'/%3E%3Cellipse cx='32' cy='30' rx='6' ry='13' stroke='white' stroke-width='1.5' fill='none'/%3E%3Cline x1='19' y1='30' x2='45' y2='30' stroke='white' stroke-width='1.5'/%3E%3Cline x1='21' y1='24' x2='43' y2='24' stroke='white' stroke-width='1.2'/%3E%3Cline x1='21' y1='36' x2='43' y2='36' stroke='white' stroke-width='1.2'/%3E%3Crect x='20' y='48' width='24' height='2.5' rx='1' fill='white'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1420;
+    --bg-2: #161d2e;
+    --card: #1c2438;
+    --card-hover: #232d45;
+    --accent: #ff3d5a;
+    --accent-2: #ffb400;
+    --text: #e8ecf3;
+    --text-dim: #8b95ab;
+    --border: rgba(255,255,255,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(255,61,90,0.12), transparent 40%),
+      radial-gradient(circle at 85% 20%, rgba(255,180,0,0.08), transparent 40%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  /* ====== هدر ====== */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,20,32,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1300px;
+    margin: 0 auto 16px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  /* ====== لوگو ====== */
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .logo:hover .logo-svg {
+    transform: rotate(-6deg) scale(1.08);
+    box-shadow: 0 12px 30px rgba(255,61,90,0.5);
+  }
+
+  .logo-svg {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(255,61,90,0.35);
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    flex-shrink: 0;
+  }
+
+  .logo span {
+    background: linear-gradient(135deg, #fff, #b8c1d6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .date-badge {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    background: var(--card);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  /* ====== جستجو ====== */
+  .search-wrap {
+    max-width: 1300px;
+    margin: 0 auto 16px;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 14px 50px 14px 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.3s;
+  }
+
+  .search-wrap input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(255,61,90,0.15);
+  }
+
+  .search-wrap input::placeholder { color: var(--text-dim); }
+
+  .search-wrap .search-icon {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    pointer-events: none;
+    font-size: 1.1rem;
+  }
+
+  /* ====== دسته‌ها ====== */
+  .categories {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .categories::-webkit-scrollbar { display: none; }
+
+  .cat-btn {
+    flex-shrink: 0;
+    background: var(--card);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cat-btn:hover {
+    background: var(--card-hover);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .cat-btn.active {
+    background: linear-gradient(135deg, var(--accent), #ff6b3d);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(255,61,90,0.35);
+  }
+
+  /* ====== گرید ====== */
+  main {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 5px;
+    height: 24px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    border-radius: 3px;
+  }
+
+  #news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  /* ====== کارت ====== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,61,90,0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,61,90,0.2);
+  }
+
+  .card-img-wrap {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.6s;
+    background: #2a3450;
+  }
+
+  .card:hover img { transform: scale(1.08); }
+
+  .card-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(28,36,56,0.95));
+    pointer-events: none;
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: rgba(255,61,90,0.95);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-content {
+    padding: 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .card-meta .dot {
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card:hover h3 { color: #fff; }
+
+  .card p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-footer .source-name {
+    font-size: 0.78rem;
+    color: var(--accent-2);
+    font-weight: 700;
+  }
+
+  .card-footer .read-more {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 600;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+  }
+
+  .card:hover .read-more { color: var(--accent); transform: translateX(-4px); }
+
+  /* ====== اسکلتون ====== */
+  .skeleton {
+    background: var(--card);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .skeleton .sk-img {
+    height: 200px;
+    background: linear-gradient(90deg, #1c2438, #232d45, #1c2438);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton .sk-body { padding: 18px; }
+
+  .skeleton .sk-line {
+    height: 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #1c2438, #232d45, #1c2438);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  .skeleton .sk-line.short { width: 60%; }
+  .skeleton .sk-line.title { height: 18px; }
+  .skeleton .sk-line.med { width: 85%; }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ====== خطا ====== */
+  .error-box {
+    grid-column: 1/-1;
+    background: rgba(255,61,90,0.1);
+    border: 1px solid rgba(255,61,90,0.3);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    color: #ff8ba0;
+  }
+
+  .error-box h3 { margin-bottom: 10px; font-size: 1.1rem; }
+  .error-box p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.8; }
+
+  /* ====== فوتر ====== */
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    background: var(--bg-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  footer strong { color: var(--accent); }
+
+  .footer-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 600px) {
+    .header-top { flex-direction: column; align-items: flex-start; }
+    #news-container { grid-template-columns: 1fr; }
+    main { padding: 20px 16px 40px; }
+    header { padding: 14px 16px; }
+    .logo { font-size: 1.25rem; }
+    .logo-svg { width: 40px; height: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <!-- ✅ لوگوی SVG -->
+    <div class="logo">
+      <svg class="logo-svg" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="خبرگزاری پارس">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff3d5a"/>
+            <stop offset="100%" stop-color="#ffb400"/>
+          </linearGradient>
+        </defs>
+        <!-- پس‌زمینه گرادیانت -->
+        <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#logoGrad)"/>
+        <!-- درخشش ملایم گوشه -->
+        <rect x="0" y="0" width="64" height="64" rx="16" fill="white" fill-opacity="0.06"/>
+        <!-- کره زمین -->
+        <circle cx="32" cy="30" r="13" stroke="white" stroke-width="2.5" fill="none"/>
+        <!-- خط عمودی وسط کره -->
+        <ellipse cx="32" cy="30" rx="6" ry="13" stroke="white" stroke-width="1.5" fill="none"/>
+        <!-- خط استوا -->
+        <line x1="19" y1="30" x2="45" y2="30" stroke="white" stroke-width="1.5"/>
+        <!-- خطوط عرض بالا و پایین -->
+        <line x1="21" y1="24" x2="43" y2="24" stroke="white" stroke-width="1.2"/>
+        <line x1="21" y1="36" x2="43" y2="36" stroke="white" stroke-width="1.2"/>
+        <!-- خط خبر پایین -->
+        <rect x="20" y="48" width="24" height="2.5" rx="1.25" fill="white"/>
+      </svg>
+      <span>خبرگزاری پارس</span>
+    </div>
+
+    <div class="date-badge" id="dateBadge">—</div>
+  </div>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="جستجو در خبرها... (مثلاً: AI, football, Iran)">
+    <span class="search-icon">🔍</span>
+  </div>
+
+  <div class="categories" id="categories">
+    <button class="cat-btn active" data-cat="general">🔥 همه</button>
+    <button class="cat-btn" data-cat="technology">💻 تکنولوژی</button>
+    <button class="cat-btn" data-cat="sports">⚽ ورزش</button>
+    <button class="cat-btn" data-cat="business">💰 اقتصاد</button>
+    <button class="cat-btn" data-cat="science">🔬 علم</button>
+    <button class="cat-btn" data-cat="health">🏥 سلامت</button>
+    <button class="cat-btn" data-cat="entertainment">🎬 سرگرمی</button>
+  </div>
+</header>
+
+<main>
+  <div class="section-title" id="sectionTitle">آخرین اخبار جهان</div>
+  <div id="news-container"></div>
+</main>
+
+<footer>
+  <!-- لوگوی کوچک در فوتر -->
+  <svg class="footer-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="footerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff3d5a"/>
+        <stop offset="100%" stop-color="#ffb400"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="64" height="64" rx="16" fill="url(#footerGrad)"/>
+    <circle cx="32" cy="30" r="13" stroke="white" stroke-width="2.5" fill="none"/>
+    <ellipse cx="32" cy="30" rx="6" ry="13" stroke="white" stroke-width="1.5" fill="none"/>
+    <line x1="19" y1="30" x2="45" y2="30" stroke="white" stroke-width="1.5"/>
+    <rect x="20" y="48" width="24" height="2.5" rx="1.25" fill="white"/>
+  </svg>
+  <span>© 2025 خبرگزاری <strong>پارس</strong> | قدرت گرفته از NewsAPI</span>
+</footer>
+
+<script>
+  // 🔑 کلید API
+  const API_KEY = "e38a6b933a0740d880f7fbbf288c9c64";
+  const BASE_URL = "https://newsapi.org/v2";
+
+  const container = document.getElementById("news-container");
+  const categoriesEl = document.getElementById("categories");
+  const searchInput = document.getElementById("searchInput");
+  const sectionTitle = document.getElementById("sectionTitle");
+
+  // تاریخ امروز
+  const dateBadge = document.getElementById("dateBadge");
+  const today = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  dateBadge.textContent = today.toLocaleDateString('fa-IR', options);
+
+  // ====== دسته‌بندی ======
+  categoriesEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".cat-btn");
+    if (!btn) return;
+    categoriesEl.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    searchInput.value = "";
+    const label = btn.textContent.trim().replace(/^[^\s]+\s/, "");
+    sectionTitle.textContent = label + " — آخرین اخبار";
+    loadByCategory(btn.dataset.cat);
+  });
+
+  // ====== جستجو ======
+  let searchTimeout;
+  searchInput.addEventListener("input", (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      const q = e.target.value.trim();
+      if (!q) return;
+      sectionTitle.textContent = `نتایج جستجو برای «${q}»`;
+      doSearch(q);
+    }, 600);
+  });
+
+  // ====== بارگذاری بر اساس دسته ======
+  async function loadByCategory(category = "general") {
+    showSkeleton();
+    const url = `${BASE_URL}/top-headlines?category=${category}&language=en&pageSize=30&apiKey=${API_KEY}`;
+    await fetchAndRender(url);
+  }
+
+  // ====== جستجو ======
+  async function doSearch(query) {
+    showSkeleton();
+    const url = `${BASE_URL}/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&pageSize=30&apiKey=${API_KEY}`;
+    await fetchAndRender(url);
+  }
+
+  // ====== دریافت و نمایش ======
+  async function fetchAndRender(url) {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.status !== "ok") {
+        throw new Error(data.message || "خطا در دریافت خبرها");
+      }
+
+      const validArticles = (data.articles || []).filter(
+        a => a.title && a.title !== "[Removed]" && a.url
+      );
+
+      if (!validArticles.length) {
+        container.innerHTML = `
+          <div class="error-box">
+            <h3>🔍 خبری یافت نشد</h3>
+            <p>برای این دسته یا جستجو، خبری در NewsAPI موجود نیست.</p>
+          </div>`;
+        return;
+      }
+
+      renderArticles(validArticles);
+
+    } catch (err) {
+      let hint = "لطفاً اتصال اینترنت و فیلترشکن خود را بررسی کن.";
+      const msg = err.message || "";
+
+      if (msg.includes("apiKey") || msg.includes("apiKeyInvalid")) {
+        hint = "کلید API نامعتبر است.";
+      } else if (msg.includes("rateLimited")) {
+        hint = "محدودیت درخواست. چند دقیقه بعد امتحان کن.";
+      } else if (msg.includes("cors") || msg.includes("Failed to fetch")) {
+        hint = "این خطا وقتی رخ می‌ده که فایل رو دابل‌کلیک کردی. فایل رو با Live Server باز کن.";
+      } else if (msg.includes("parameters are missing")) {
+        hint = "پارامتر جستجو خالیه. یک کلمه تایپ کن.";
+      }
+
+      container.innerHTML = `
+        <div class="error-box">
+          <h3>❌ خطا در دریافت خبرها</h3>
+          <p>${msg}</p>
+          <p style="margin-top:10px">${hint}</p>
+        </div>`;
+    }
+  }
+
+  // ====== نمایش ======
+  function renderArticles(articles) {
+    container.innerHTML = "";
+    articles.forEach((a, i) => {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.style.animationDelay = (i * 0.04) + "s";
+
+      const title = a.title || "بدون عنوان";
+      const desc = a.description || a.content || "برای مشاهده جزئیات کلیک کنید.";
+      const link = a.url || "#";
+      const img = a.urlToImage || "https://placehold.co/600x400/1c2438/ff3d5a?text=News";
+      const source = a.source?.name || "نامشخص";
+      const timeAgo = a.publishedAt ? formatTimeAgo(a.publishedAt) : "لحظاتی پیش";
+
+      card.innerHTML = `
+        <div class="card-img-wrap">
+          <span class="card-badge">${source}</span>
+          <img src="${img}" alt="" loading="lazy"
+               onerror="this.src='https://placehold.co/600x400/1c2438/ff3d5a?text=News'">
+        </div>
+        <div class="card-content">
+          <div class="card-meta">
+            <span>${timeAgo}</span>
+            <span class="dot"></span>
+            <span>${source}</span>
+          </div>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+          <div class="card-footer">
+            <span class="source-name">${source}</span>
+            <a class="read-more" href="${link}" target="_blank" rel="noopener">
+              ادامه مطلب ←
+            </a>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // ====== اسکلتون ======
+  function showSkeleton() {
+    container.innerHTML = "";
+    for (let i = 0; i < 6; i++) {
+      const sk = document.createElement("div");
+      sk.className = "skeleton";
+      sk.innerHTML = `
+        <div class="sk-img"></div>
+        <div class="sk-body">
+          <div class="sk-line short"></div>
+          <div class="sk-line title"></div>
+          <div class="sk-line med"></div>
+          <div class="sk-line med"></div>
+        </div>
+      `;
+      container.appendChild(sk);
+    }
+  }
+
+  // ====== زمان نسبی ======
+  function formatTimeAgo(dateStr) {
+    try {
+      const d = new Date(dateStr);
+      const diff = (Date.now() - d.getTime()) / 1000;
+      if (diff < 60) return "همین الان";
+      if (diff < 3600) return Math.floor(diff / 60) + " دقیقه پیش";
+      if (diff < 86400) return Math.floor(diff / 3600) + " ساعت پیش";
+      if (diff < 604800) return Math.floor(diff / 86400) + " روز پیش";
+      return d.toLocaleDateString('fa-IR');
+    } catch { return ""; }
+  }
+
+  // ====== شروع ======
+  loadByCategory("general");
+</script>
+
+</body>
+</html>
